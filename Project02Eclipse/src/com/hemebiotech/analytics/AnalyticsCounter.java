@@ -2,6 +2,11 @@ package com.hemebiotech.analytics;
 
 import java.util.*;
 import java.util.Map.Entry;
+
+import count.ICount;
+import read.ISymptomReader;
+import write.IWriteResult;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -10,52 +15,30 @@ import java.io.FileWriter;
 
 public class AnalyticsCounter {
 
-
-	static Map<String, Integer> frequency = new HashMap<>();
-
-	static BufferedWriter writer;
-
+	private final ISymptomReader reader;
+	private final ICount counter;
+	private final IWriteResult writer;
 	
-	public static void main(String args[]) throws Exception {
-
-		// File Reader
-		BufferedReader reader = new BufferedReader(new FileReader("symptoms.txt"));
-		//File writer
-		writer = new BufferedWriter(new FileWriter("result.out", true));
-
-		String line;
-
-		String symptoms;
-
-		// read lines until reaching the end of the file
-		while ((line = reader.readLine()) != null) {
-
-			symptoms = line;
-
-			if (line.length() != 0) {
-
-				if (frequency.containsKey(symptoms)) {
-					frequency.put(symptoms, frequency.get(symptoms) + 1);// Increment 1 if a key match a symptom
-				} else {
-					frequency.put(symptoms, 1);// If the key match only one time set value to 1
-				}
-
-			}
-
-		}
-		//Writting the output on the result.out file
-		for (Entry<String, Integer> count : frequency.entrySet()) {
-			System.out.println(count.getKey() + "=" + count.getValue());//preview result.out file
-			writer.write(count.getKey() + "=" + count.getValue());
-			writer.newLine();
-			writer.flush();
-		}
-		
-		// Closing Resources
-		reader.close();
-
-	}
-
-
+	public AnalyticsCounter(ISymptomReader reader, ICount counter,  IWriteResult writer) {
+        this.reader = reader;
+        this.counter = counter;
+        this.writer = writer;
+    }
 	
+	public void execute() throws Exception {
+        //2eme étape: On lit le fichier symptoms.txt
+        List<String> allSymptoms = reader.getSymptoms();
+
+        //3eme étape: On utilise la classe CountSymptom cette fois ci pour compter les symptoms.
+        Map<String, Integer> symptomsCounter = counter.count(allSymptoms);
+
+        //4eme étape: On range dans l'ordre alphabétique les symptoms.
+        List<String> symptoms = sorter.sort(symptomsCounter.keySet());
+
+        //5eme étape: On écrit le fichier result.out
+        for (String symptom: symptoms){
+            writer.write(symptom, symptomsCounter.get(symptom));
+        }
+        writer.close();
+    }
 }
