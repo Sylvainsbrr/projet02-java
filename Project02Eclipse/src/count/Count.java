@@ -6,7 +6,7 @@ public class Count implements ICount {
 	  
 	    @Override
 		public Map<String, Integer> count(List<String> symptoms){
-	        Map<String, Integer>  symptomsCounter = new HashMap<>();
+	        Map<String, Integer>  symptomsCounter = new TreeMap<>();
 
 	        for (String symptom : symptoms){
 	            if (symptomsCounter.containsKey(symptom)) {
