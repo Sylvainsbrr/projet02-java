@@ -5,7 +5,10 @@ import count.ICount;
 import read.ISymptomReader;
 import write.IWriteResult;
 
-
+/**
+ * Interfaces Implementation and initialization
+ *
+ */
 
 
 public class AnalyticsCounter {
@@ -19,15 +22,18 @@ public class AnalyticsCounter {
         this.counter = counter;
         this.writer = writer;
     }
-	
+	/**
+	 * An execute in 3 read , count , write that we will use in our Main class
+	 *
+	 */
 	public void execute() throws Exception {
-        //1eme étape: On lit le fichier symptoms.txt
+        //1 Step: Read the file symptoms.txt
         List<String> allSymptoms = reader.getSymptoms();
 
-        //2eme étape: On utilise la classe CountSymptom cette fois ci pour compter les symptoms.
+        //2 Step: Using Count Class to count symptoms occurrences in the symptom File.
         Map<String, Integer> symptomsCounter = counter.count(allSymptoms);
         Set<String> symptoms = symptomsCounter.keySet();
-        //3eme étape: On écrit le fichier result.out
+        //3 Step: Write occurrences in the  result.out File
         for (String symptom: symptoms){
             writer.write(symptom, symptomsCounter.get(symptom));
         }

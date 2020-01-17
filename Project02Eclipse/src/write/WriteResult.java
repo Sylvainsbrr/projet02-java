@@ -2,7 +2,10 @@ package write;
 
 import java.io.FileWriter;
 import java.io.IOException;
-
+/**
+ * Simple brute force implementation
+ *
+ */
 public class WriteResult implements IWriteResult{
 	
 	 private final FileWriter writer;

@@ -11,9 +11,9 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-        ISymptomReader reader = new ReadSymptomDataFromFile("symptoms.txt");
+        ISymptomReader reader = new ReadSymptomDataFromFile("symptoms.txt");//File that we want to read
         ICount counter = new Count();
-        IWriteResult writer = new WriteResult("result.out");
+        IWriteResult writer = new WriteResult("result.out");//File where we write the output of occurrences
 
         new AnalyticsCounter(
                 reader,counter,writer
